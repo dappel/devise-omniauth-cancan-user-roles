@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+    <title><%= yield(:title) || "Untitled" %></title>
+    <%= stylesheet_link_tag 'application' %>
+    <%= javascript_include_tag :defaults %>
+    <%= csrf_meta_tag %>
+    <%= yield(:head) %>
+  </head>
+  <body>
+  <div id="container">
+  	
+	<div id="user_nav">
+	        <% if user_signed_in? %>
+	          Signed in as <%= current_user.email %>. Not you?
+	          <%= link_to "Sign out", destroy_user_session_path %>
+	        <% else %>
+	          <%= link_to "Sign up", new_user_registration_path %> or <%= link_to "Sign in", new_user_session_path %>
+	        <% end %>
+	</div>
+	
+	<div id='navbar'>
+		<ul>
+			<li><%= link_to 'Home', root_url %></li>
+				<% if can? :manage, @users %>
+				<li><%= link_to 'User Management', {:controller => 'user_management', :action => 'index'} %></li>
+				<% end %>
+				<% if can? :edit, current_user %>
+			<li><%= link_to 'Profile', {:controller => 'user', :action => 'edit', :id => current_user } %></li>
+			<% end %>
+			<% if can? :manage, Authentication %>
+			<li><%= link_to 'Authentications', {:controller => 'authentications', :action => 'index'} %></li>
+			<% end %>
+			
+		</ul>
+	</div>
+      
+   	 	<div id="content">
+    	
+    
+	      <% flash.each do |name, msg| %>
+	        <%= content_tag :div, msg, :id => "flash_#{name}" %>
+	      <% end %>
+
+
+
+      
+      
+	      <%= yield %>
+		</div>
+    </div>
+
+  </body>
+</html>

@@ -1,0 +1,15 @@
+<% title "Edit User" %>
+
+<% if @user.image_url? %>
+	<%= image_tag(@user.image_url, :class => 'image_class') %>
+ <% else %>
+	<p><a href="/auth/linked_in" class="auth_provider">
+	  <%= image_tag "linkedin_64.png", :size => "64x64", :alt => "LinkedIn" %>
+	  Import profile from LinkedIn
+	</a></p>
+<% end %>
+
+
+<%= form_for @user, :url => user_path do |f| %>
+  <%= render :partial => 'form', :locals => { :f => f } %>
+<% end %>
